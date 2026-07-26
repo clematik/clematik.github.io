@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Gumption Excell Assessment Reports</title>
+<link rel="icon" type="image/jpeg" href="logo.jpeg">
+
+<!-- PDF Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #eef2f7;
+    color: #000;
+}
+
+.controls {
+    text-align: center;
+    padding: 25px;
+    background: white;
+    border-bottom: 1px solid #ddd;
+}
+
+button {
+    background: #0a388a;
+    color: white;
+    border: none;
+    padding: 15px 28px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #06255e;
+}
+
+#status {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #555;
+}
+
+/* A4 REPORT PAGE WITH EXACT THICK ROYAL BLUE FRAME */
+.report-page {
+    width: 794px;
+    height: 1123px;
+    background: white;
+    margin: 30px auto;
+    padding: 40px 50px 30px 50px;
+    position: relative;
+    overflow: hidden;
+    /* Thick full outer royal blue border without margin */
+    border: 42px solid #0a388a; 
+}
+
+/* BACKGROUND WATERMARK */
+.watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 65%;
+    opacity: 0.08;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.content-wrapper {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* HEADER SECTION */
+.header-section {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.header-logo {
+    max-width: 180px;
+    height: auto;
+    margin: 0 auto 10px auto;
+    display: block;
+}
+
+.header-title {
+    font-size: 16px;
+    font-weight: 900;
+    font-style: italic;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.header-divider {
+    border: none;
+    border-top: 2px solid #000;
+    margin: 0 0 15px 0;
+}
+
+/* STUDENT INFO SECTION */
+.student-info-grid {
+    margin-bottom: 20px;
+    font-size: 12.5px;
+}
+
+.info-row-main {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.info-row-sub {
+    text-align: center;
+    font-weight: 800;
+    font-size: 11px;
+}
+
+/* DESCRIPTION SECTION */
+.description-block {
+    font-size: 12px;
+    line-height: 1.45;
+    margin-bottom: 20px;
+}
+
+.description-block p {
+    margin: 0 0 8px 0;
+}
+
+.bullet-list {
+    list-style-type: none;
+    padding-left: 15px;
+    margin: 0;
+}
+
+.bullet-list li {
+    position: relative;
+    margin-bottom: 3px;
+}
+
+.bullet-list li::before {
+    content: "■";
+    font-size: 10px;
+    position: absolute;
+    left: -15px;
+    top: 0px;
+}
+
+/* PROGRAMS COVERED */
+.programs-section {
+    margin-bottom: 20px;
+    font-size: 12px;
+}
+
+.section-label {
+    font-weight: 800;
+    font-size: 12.5px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.programs-list {
+    padding-left: 20px;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* TABLES */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-bottom: 20px;
+}
+
+th, td {
+    border: 1.5px solid #333;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+th {
+    font-weight: 800;
+    text-transform: uppercase;
+    background: transparent;
+}
+
+td.center, th.center {
+    text-align: center;
+}
+
+.total-row td {
+    font-weight: 800;
+}
+
+/* FOOTER */
+.footer-section {
+    margin-top: auto;
+    text-align: center;
+    font-size: 11px;
+    line-height: 1.4;
+    padding-bottom: 10px;
+}
+
+.footer-motto {
+    font-style: italic;
+    text-decoration: underline;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.footer-links {
+    font-weight: normal;
+}
+
+@media print {
+    .controls {
+        display: none;
+    }
+
+    body {
+        background: white;
+    }
+
+    .report-page {
+        margin: 0;
+        page-break-after: always;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="controls">
+    <button onclick="generatePDF()">GENERATE COMPLETE PDF</button>
+    <div id="status"></div>
+</div>
+
+<div id="reports"></div>
+
+<script>
+/* =====================================================
+   STUDENT DATA
+   MARKS PRESERVED EXACTLY
+===================================================== */
+const students = [
+
+{
+name:"Emmanuella Akata Aefe",
+test1:8,test2:9,test3:8,test4:10,
+practical:35,exam:80,exam60:48,total:83
+},
+
+{
+name:"Aaron Mambinga King Nelson",
+test1:10,test2:9,test3:10,test4:10,
+practical:39,exam:100,exam60:60,total:99
+},
+
+{
+name:"Oscar Nii Ayitey Hammond",
+test1:10,test2:8,test3:9,test4:9,
+practical:36,exam:100,exam60:60,total:96
+},
+
+{
+name:"Quao Adriel Comfy Naa Abiana",
+test1:8,test2:7,test3:9,test4:10,
+practical:34,exam:85,exam60:51,total:85
+},
+
+{
+name:"Shalom Amenuveve Atsem",
+test1:9,test2:8,test3:10,test4:10,
+practical:37,exam:100,exam60:60,total:97
+},
+
+{
+name:"Elijah Jerome Agbovi",
+test1:9,test2:8,test3:8,test4:10,
+practical:35,exam:95,exam60:57,total:92
+},
+
+{
+name:"Yestor Dave-Mauel Wunu",
+test1:9,test2:10,test3:8,test4:9,
+practical:36,exam:90,exam60:54,total:90
+},
+
+{
+name:"Isaac Nii Adjetey Boye-Sekan",
+test1:10,test2:9,test3:9,test4:10,
+practical:38,exam:100,exam60:60,total:98
+},
+
+{
+name:"Nathaniel Amangwon Atankori",
+test1:8,test2:8,test3:7,test4:8,
+practical:31,exam:85,exam60:51,total:82
+},
+
+{
+name:"Gifty Leah Gagli",
+test1:8,test2:7,test3:6,test4:7,
+practical:28,exam:"",exam60:"",total:28
+},
+
+{
+name:"Eunice Aiwa",
+test1:7,test2:8,test3:6,test4:6,
+practical:27,exam:70,exam60:42,total:69
+},
+
+{
+name:"Jessica Dampare",
+test1:7,test2:6,test3:7,test4:8,
+practical:28,exam:75,exam60:45,total:73
+},
+
+{
+name:"Enam Atarah Zanu",
+test1:8,test2:9,test3:10,test4:9,
+practical:36,exam:90,exam60:54,total:90
+},
+
+{
+name:"Kelvin Adjetey",
+test1:5,test2:6,test3:8,test4:8,
+practical:27,exam:60,exam60:36,total:63
+},
+
+{
+name:"Mohammed Ibrahim",
+test1:9,test2:8,test3:8,test4:9,
+practical:34,exam:90,exam60:54,total:88
+},
+
+{
+name:"Bernard Yeboah",
+test1:7,test2:7,test3:8,test4:9,
+practical:31,exam:75,exam60:45,total:76
+},
+
+{
+name:"Bezalel Kekeli Atsem",
+test1:6,test2:7,test3:7,test4:8,
+practical:28,exam:75,exam60:45,total:73
+},
+
+{
+name:"Nashir Nasara Yussif",
+test1:7,test2:8,test3:7,test4:8,
+practical:30,exam:75,exam60:45,total:75
+},
+
+{
+name:"Richard Akangoa",
+test1:6,test2:7,test3:8,test4:8,
+practical:29,exam:70,exam60:42,total:71
+},
+
+{
+name:"Mercy Peprah",
+test1:8,test2:9,test3:8,test4:10,
+practical:35,exam:85,exam60:51,total:86
+},
+
+{
+name:"Maa-Adjowa Agyekum",
+test1:8,test2:9,test3:7,test4:8,
+practical:32,exam:80,exam60:48,total:80
+},
+
+{
+name:"Obaa Yaa Agyeman",
+test1:"",test2:"",test3:"",test4:"",
+practical:"",exam:"",exam60:"",total:""
+},
+
+{
+name:"Emery Nyarko",
+test1:7,test2:6,test3:9,test4:8,
+practical:30,exam:"",exam60:"",total:30
+},
+
+{
+name:"Janelle Afoley Odai",
+test1:9,test2:9,test3:8,test4:10,
+practical:36,exam:100,exam60:60,total:96
+},
+
+{
+name:"Stacy Adjetey Sekan-Boye",
+test1:10,test2:9,test3:9,test4:10,
+practical:38,exam:100,exam60:60,total:98
+},
+
+{
+name:"Livingword Zaglago",
+test1:10,test2:8,test3:8,test4:9,
+practical:35,exam:90,exam60:54,total:89
+},
+
+{
+name:"Williams Junior Bawah",
+test1:8,test2:9,test3:8,test4:10,
+practical:35,exam:80,exam60:48,total:83
+},
+
+{
+name:"Kelvys Kwadzo Agyeman",
+test1:9,test2:8,test3:8,test4:9,
+practical:34,exam:100,exam60:60,total:94
+},
+
+{
+name:"Christian Tetteh",
+test1:6,test2:7,test3:7,test4:9,
+practical:29,exam:55,exam60:33,total:62
+}
+
+];
+
+/* HELPER FUNCTIONS */
+function show(value) {
+    if (value === "" || value === null || value === undefined) {
+        return "—";
+    }
+    return value;
+}
+
+/* CREATE HTML REPORTS */
+function createReports() {
+    const container = document.getElementById("reports");
+
+    students.forEach((student, index) => {
+        const page = document.createElement("div");
+        page.className = "report-page";
+
+        page.innerHTML = `
+            <!-- WATERMARK -->
+            <img src="logo.jpeg" class="watermark" alt="" onerror="this.style.display='none'">
+
+            <div class="content-wrapper">
+                <!-- HEADER -->
+                <div class="header-section">
+                    <img src="logo.jpeg" alt="Gumption Excell" class="header-logo" onerror="this.style.display='none'">
+                    <div class="header-title">CODING & ROBOTICS SESSIONS</div>
+                </div>
+
+                <hr class="header-divider">
+
+                <!-- STUDENT INFO -->
+                <div class="student-info-grid">
+                    <div class="info-row-main">
+                        <span>NAME: ${student.name.toUpperCase()}</span>
+                        <span>ID: JA ${index + 1}</span>
+                    </div>
+                    <div class="info-row-sub">
+                        TERM 1 | COHORT 2 [GRADES 4-6]
+                    </div>
+                </div>
+
+                <!-- DESCRIPTION -->
+                <div class="description-block">
+                    <p>The following scores represent an end of term assessment score in Coding and Robotics engagements.</p>
+                    <p><strong>DESCRIPTION: Covering Coding & Programming Basics Lessons:</strong></p>
+                    <ul class="bullet-list">
+                        <li>Understanding the concept of coding,</li>
+                        <li>Identification of features and tools in the programming interface,</li>
+                        <li>Ability to try out simple tasks in the programming interface.</li>
+                    </ul>
+                </div>
+
+                <!-- PROGRAMS COVERED -->
+                <div class="programs-section">
+                    <div class="section-label">PROGRAMS COVERED</div>
+                    <div style="padding-left: 10px; line-height: 1.5;">
+                        Scratch Jr.<br>
+                        Scratch 3.0<br>
+                        Blockly Programming<br>
+                        Javascript Programming
+                    </div>
+                </div>
+
+                <!-- ASSESSMENT SCORES TABLE -->
+                <div class="section-label">ASSESSMENT SCORES</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="center" style="width: 50%;">COMPONENT</th>
+                            <th class="center" style="width: 50%;">TOTAL SCORE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="center">Practical Test 1 (10)</td>
+                            <td class="center">${show(student.test1)}</td>
+                        </tr>
+                        <tr>
+                            <td class="center">Practical Test 2 (10)</td>
+                            <td class="center">${show(student.test2)}</td>
+                        </tr>
+                        <tr>
+                            <td class="center">Practical Test 3 (10)</td>
+                            <td class="center">${show(student.test3)}</td>
+                        </tr>
+                        <tr>
+                            <td class="center">Practical Test 4 (10)</td>
+                            <td class="center">${show(student.test4)}</td>
+                        </tr>
+                        <tr>
+                            <td class="center">Practical Total (40)</td>
+                            <td class="center">${show(student.practical)}</td>
+                        </tr>
+                        <tr>
+                            <td class="center">Exam Score (100)</td>
+                            <td class="center">${show(student.exam)}</td>
+                        </tr>
+                        <tr>
+                            <td class="center">Exam Contribution (60)</td>
+                            <td class="center">${show(student.exam60)}</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td class="center">OVERALL SCORE (%)</td>
+                            <td class="center">${show(student.total)}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- GRADING SCALE TABLE -->
+                <div class="section-label">GRADING SCALE</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 40%;">SCORE RANGE</th>
+                            <th style="width: 60%;">PERFORMANCE LEVEL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>70% - 100%</td>
+                            <td>High Performance</td>
+                        </tr>
+                        <tr>
+                            <td>50% - 69%</td>
+                            <td>Good Performance</td>
+                        </tr>
+                        <tr>
+                            <td>Below 50%</td>
+                            <td>Needs Improvement</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- FOOTER -->
+                <div class="footer-section">
+                    <div class="footer-motto">At gumption ex we're inspiring aspirations.</div>
+                    <div class="footer-links">
+                        gumptionex.org<br>
+                        aspire@gumptionex.org
+                    </div>
+                </div>
+            </div>
+        `;
+
+        container.appendChild(page);
+    });
+}
+
+/* GENERATE PDF FUNCTION */
+async function generatePDF() {
+    const button = document.querySelector("button");
+    const status = document.getElementById("status");
+
+    button.disabled = true;
+    button.innerText = "GENERATING PDF...";
+    status.innerText = "Please wait. Creating student reports...";
+
+    const { jsPDF } = window.jspdf;
+
+    const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
+        compress: true
+    });
+
+    const pages = document.querySelectorAll(".report-page");
+
+    for (let i = 0; i < pages.length; i++) {
+        status.innerText = `Creating report ${i + 1} of ${pages.length}...`;
+
+        const canvas = await html2canvas(pages[i], {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: "#ffffff",
+            logging: false
+        });
+
+        const imageData = canvas.toDataURL("image/jpeg", 0.95);
+
+        if (i > 0) {
+            pdf.addPage();
+        }
+
+        pdf.addImage(imageData, "JPEG", 0, 0, 210, 297);
+    }
+
+    pdf.save("Gumption_Excell_Coding_Robotics_Reports.pdf");
+
+    button.disabled = false;
+    button.innerText = "GENERATE COMPLETE PDF";
+    status.innerText = "PDF generated successfully!";
+}
+
+/* Run on page load */
+createReports();
+</script>
+
+</body>
+</html>

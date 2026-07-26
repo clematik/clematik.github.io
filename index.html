@@ -7,61 +7,40 @@
 <title>Gumption Excell Assessment Reports</title>
 <link rel="icon" type="image/jpeg" href="https://gumptionex.org/images/0/9085016/INSPIRINGASPIRATIONS-Copy.jpg">
 
-<!-- PDF Libraries -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
 <style>
 * {
     box-sizing: border-box;
 }
 
+@page {
+    size: A4 portrait;
+    margin: 0; /* Ensures edge-to-edge blue border with no outer whitespace when printed */
+}
+
 body {
     margin: 0;
+    padding: 0;
     font-family: Arial, Helvetica, sans-serif;
     background: #eef2f7;
     color: #000;
-}
-
-.controls {
-    text-align: center;
-    padding: 25px;
-    background: white;
-    border-bottom: 1px solid #ddd;
-}
-
-button {
-    background: #0a388a;
-    color: white;
-    border: none;
-    padding: 15px 28px;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-button:hover {
-    background: #06255e;
-}
-
-#status {
-    margin-top: 12px;
-    font-size: 14px;
-    color: #555;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
 }
 
 /* A4 REPORT PAGE WITH EXACT THICK ROYAL BLUE FRAME */
 .report-page {
-    width: 794px;
-    height: 1123px;
+    width: 210mm;
+    height: 297mm;
     background: white;
-    margin: 30px auto;
-    padding: 40px 50px 30px 50px;
+    margin: 20px auto;
+    padding: 30px 40px 20px 40px;
     position: relative;
     overflow: hidden;
-    /* Thick full outer royal blue border without margin */
-    border: 42px solid #0a388a; 
+    /* Thick full outer royal blue border extending right to the edges */
+    border: 35px solid #0a388a; 
+    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    break-after: page;
+    page-break-after: always;
 }
 
 /* BACKGROUND WATERMARK */
@@ -87,35 +66,35 @@ button:hover {
 /* HEADER SECTION */
 .header-section {
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .header-logo {
-    max-width: 180px;
+    max-width: 160px;
     height: auto;
-    margin: 0 auto 10px auto;
+    margin: 0 auto 8px auto;
     display: block;
 }
 
 .header-title {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 900;
     font-style: italic;
     letter-spacing: 0.5px;
     text-transform: uppercase;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .header-divider {
     border: none;
     border-top: 2px solid #000;
-    margin: 0 0 15px 0;
+    margin: 0 0 12px 0;
 }
 
 /* STUDENT INFO SECTION */
 .student-info-grid {
-    margin-bottom: 15px;
-    font-size: 12.5px;
+    margin-bottom: 12px;
+    font-size: 12px;
 }
 
 .info-row-main {
@@ -133,13 +112,13 @@ button:hover {
 
 /* DESCRIPTION SECTION */
 .description-block {
-    font-size: 12px;
-    line-height: 1.45;
-    margin-bottom: 15px;
+    font-size: 11.5px;
+    line-height: 1.4;
+    margin-bottom: 12px;
 }
 
 .description-block p {
-    margin: 0 0 8px 0;
+    margin: 0 0 6px 0;
 }
 
 .bullet-list {
@@ -150,12 +129,12 @@ button:hover {
 
 .bullet-list li {
     position: relative;
-    margin-bottom: 3px;
+    margin-bottom: 2px;
 }
 
 .bullet-list li::before {
     content: "■";
-    font-size: 10px;
+    font-size: 9px;
     position: absolute;
     left: -15px;
     top: 0px;
@@ -163,34 +142,28 @@ button:hover {
 
 /* PROGRAMS COVERED */
 .programs-section {
-    margin-bottom: 15px;
-    font-size: 12px;
+    margin-bottom: 12px;
+    font-size: 11.5px;
 }
 
 .section-label {
     font-weight: 800;
-    font-size: 12.5px;
-    margin-bottom: 6px;
+    font-size: 12px;
+    margin-bottom: 5px;
     text-transform: uppercase;
-}
-
-.programs-list {
-    padding-left: 20px;
-    margin: 0;
-    line-height: 1.4;
 }
 
 /* TABLES */
 table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 12px;
-    margin-bottom: 15px;
+    font-size: 11.5px;
+    margin-bottom: 12px;
 }
 
 th, td {
     border: 1.5px solid #333;
-    padding: 6px 12px;
+    padding: 5px 10px;
     text-align: left;
 }
 
@@ -214,21 +187,21 @@ td.center, th.center {
     text-align: center;
     font-size: 11px;
     line-height: 1.4;
-    padding-bottom: 10px;
+    padding-bottom: 5px;
 }
 
 .footer-motto {
     font-style: italic;
     font-weight: bold;
     color: #0a388a;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
 
 .footer-divider {
     border: none;
     border-top: 3px solid #000000;
     width: 100%;
-    margin: 0 auto 8px auto;
+    margin: 0 auto 6px auto;
 }
 
 .footer-links {
@@ -237,28 +210,21 @@ td.center, th.center {
 }
 
 @media print {
-    .controls {
-        display: none !important;
-    }
-
     body {
         background: white;
     }
 
     .report-page {
         margin: 0;
-        page-break-after: always;
+        box-shadow: none;
+        width: 210mm;
+        height: 297mm;
     }
 }
 </style>
 </head>
 
 <body>
-
-<div class="controls">
-    <button onclick="generatePDF()">GENERATE COMPLETE PDF</button>
-    <div id="status"></div>
-</div>
 
 <div id="reports"></div>
 
@@ -267,8 +233,7 @@ td.center, th.center {
    STUDENT DATA
    MARKS PRESERVED EXACTLY
 ===================================================== */
-const rawLogoUrl = "https://gumptionex.org/images/0/9085016/INSPIRINGASPIRATIONS-Copy.jpg";
-let logoDataUrl = rawLogoUrl;
+const logoUrl = "https://gumptionex.org/images/0/9085016/INSPIRINGASPIRATIONS-Copy.jpg";
 
 const students = [
 
@@ -456,26 +421,6 @@ function show(value) {
     return value;
 }
 
-/* PRE-LOAD LOGO AS BASE64 TO PREVENT CANVAS dropping IMAGES */
-function getBase64ImageFromUrl(url) {
-    return new Promise((resolve) => {
-        const img = new Image();
-        img.crossOrigin = "Anonymous";
-        img.src = url;
-        img.onload = () => {
-            const canvas = document.createElement("canvas");
-            canvas.width = img.width;
-            canvas.height = img.height;
-            const ctx = canvas.getContext("2d");
-            ctx.drawImage(img, 0, 0);
-            resolve(canvas.toDataURL("image/jpeg"));
-        };
-        img.onerror = () => {
-            resolve(url); // Fallback to raw URL
-        };
-    });
-}
-
 /* ID GENERATOR BASED ON INITIALS & OCCURRENCE COUNTER */
 const initialCounts = {};
 
@@ -505,9 +450,6 @@ function createReports() {
     const container = document.getElementById("reports");
     container.innerHTML = "";
 
-    // Reset counts on render
-    for (let member in initialCounts) delete initialCounts[member];
-
     students.forEach((student) => {
         const studentID = generateStudentID(student.name);
         const page = document.createElement("div");
@@ -515,12 +457,12 @@ function createReports() {
 
         page.innerHTML = `
             <!-- WATERMARK -->
-            <img src="${logoDataUrl}" class="watermark" alt="">
+            <img src="${logoUrl}" class="watermark" alt="">
 
             <div class="content-wrapper">
                 <!-- HEADER -->
                 <div class="header-section">
-                    <img src="${logoDataUrl}" alt="Gumption Excell" class="header-logo">
+                    <img src="${logoUrl}" alt="Gumption Excell" class="header-logo">
                     <div class="header-title">CODING & ROBOTICS SESSIONS</div>
                 </div>
 
@@ -533,7 +475,7 @@ function createReports() {
                         <span>ID: ${studentID}</span>
                     </div>
                     <div class="info-row-sub">
-                        TERM 1 | COHORT 2 [GRADES 1-3]
+                        TERM 3 | COHORT 2 [GRADES 1-3]
                     </div>
                 </div>
 
@@ -646,63 +588,8 @@ function createReports() {
     });
 }
 
-/* GENERATE PDF FUNCTION */
-async function generatePDF() {
-    const button = document.querySelector("button");
-    const status = document.getElementById("status");
-
-    button.disabled = true;
-    button.innerText = "GENERATING PDF...";
-    status.innerText = "Please wait. Creating student reports...";
-
-    const { jsPDF } = window.jspdf;
-
-    const pdf = new jsPDF({
-        orientation: "portrait",
-        unit: "mm",
-        format: "a4",
-        compress: true
-    });
-
-    const pages = document.querySelectorAll(".report-page");
-
-    for (let i = 0; i < pages.length; i++) {
-        status.innerText = `Creating report ${i + 1} of ${pages.length}...`;
-
-        const canvas = await html2canvas(pages[i], {
-            scale: 2,
-            useCORS: true,
-            allowTaint: true,
-            imageTimeout: 0,
-            backgroundColor: "#ffffff",
-            logging: false
-        });
-
-        const imageData = canvas.toDataURL("image/jpeg", 0.95);
-
-        if (i > 0) {
-            pdf.addPage();
-        }
-
-        pdf.addImage(imageData, "JPEG", 0, 0, 210, 297);
-    }
-
-    pdf.save("Gumption_Excell_Coding_Robotics_Reports.pdf");
-
-    button.disabled = false;
-    button.innerText = "GENERATE COMPLETE PDF";
-    status.innerText = "PDF generated successfully!";
-}
-
-/* Run on page load */
-window.onload = async () => {
-    try {
-        logoDataUrl = await getBase64ImageFromUrl(rawLogoUrl);
-    } catch(e) {
-        console.warn("Base64 image conversion fallback triggered.");
-    }
-    createReports();
-};
+/* Run on load */
+createReports();
 </script>
 
 </body>

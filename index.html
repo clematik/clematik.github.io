@@ -226,7 +226,7 @@ td.center, th.center {
 
 .footer-divider {
     border: none;
-    border-top: 3px solid #0a388a;
+    border-top: 3px solid #000000;
     width: 100%;
     margin: 0 auto 8px auto;
 }
@@ -267,7 +267,8 @@ td.center, th.center {
    STUDENT DATA
    MARKS PRESERVED EXACTLY
 ===================================================== */
-const logoUrl = "https://gumptionex.org/images/0/9085016/INSPIRINGASPIRATIONS-Copy.jpg";
+const rawLogoUrl = "https://gumptionex.org/images/0/9085016/INSPIRINGASPIRATIONS-Copy.jpg";
+let logoDataUrl = rawLogoUrl;
 
 const students = [
 
@@ -455,6 +456,26 @@ function show(value) {
     return value;
 }
 
+/* PRE-LOAD LOGO AS BASE64 TO PREVENT CANVAS dropping IMAGES */
+function getBase64ImageFromUrl(url) {
+    return new Promise((resolve) => {
+        const img = new Image();
+        img.crossOrigin = "Anonymous";
+        img.src = url;
+        img.onload = () => {
+            const canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+            resolve(canvas.toDataURL("image/jpeg"));
+        };
+        img.onerror = () => {
+            resolve(url); // Fallback to raw URL
+        };
+    });
+}
+
 /* ID GENERATOR BASED ON INITIALS & OCCURRENCE COUNTER */
 const initialCounts = {};
 
@@ -482,6 +503,10 @@ function generateStudentID(fullName) {
 /* CREATE HTML REPORTS */
 function createReports() {
     const container = document.getElementById("reports");
+    container.innerHTML = "";
+
+    // Reset counts on render
+    for (let member in initialCounts) delete initialCounts[member];
 
     students.forEach((student) => {
         const studentID = generateStudentID(student.name);
@@ -490,12 +515,12 @@ function createReports() {
 
         page.innerHTML = `
             <!-- WATERMARK -->
-            <img src="${logoUrl}" class="watermark" alt="" onerror="this.style.display='none'">
+            <img src="${logoDataUrl}" class="watermark" alt="">
 
             <div class="content-wrapper">
                 <!-- HEADER -->
                 <div class="header-section">
-                    <img src="${logoUrl}" alt="Gumption Excell" class="header-logo" onerror="this.style.display='none'">
+                    <img src="${logoDataUrl}" alt="Gumption Excell" class="header-logo">
                     <div class="header-title">CODING & ROBOTICS SESSIONS</div>
                 </div>
 
@@ -623,9 +648,8 @@ function createReports() {
 
 /* GENERATE PDF FUNCTION */
 async function generatePDF() {
-    const controls = document.querySelector(".controls");
-    const status = document.getElementById("status");
     const button = document.querySelector("button");
+    const status = document.getElementById("status");
 
     button.disabled = true;
     button.innerText = "GENERATING PDF...";
@@ -648,6 +672,8 @@ async function generatePDF() {
         const canvas = await html2canvas(pages[i], {
             scale: 2,
             useCORS: true,
+            allowTaint: true,
+            imageTimeout: 0,
             backgroundColor: "#ffffff",
             logging: false
         });
@@ -669,7 +695,14 @@ async function generatePDF() {
 }
 
 /* Run on page load */
-createReports();
+window.onload = async () => {
+    try {
+        logoDataUrl = await getBase64ImageFromUrl(rawLogoUrl);
+    } catch(e) {
+        console.warn("Base64 image conversion fallback triggered.");
+    }
+    createReports();
+};
 </script>
 
 </body>

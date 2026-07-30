@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lincoln Tech Hub - Grade 1-4 Lab 1</title>
+<style>
+    @page {
+        size: A4;
+        margin: 15mm;
+    }
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 13pt;
+        color: #000;
+        line-height: 1.5;
+    }
+    .logo-header {
+        text-align: center;
+        border-bottom: 3px solid #0a4d68;
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+    }
+    .logo {
+        height: 90px; /* bigger logo at top */
+    }
+    .title {
+        text-align: center;
+        margin: 15px 0;
+    }
+    .title h1 {
+        margin: 0;
+        font-size: 20pt;
+        color: #0a4d68;
+    }
+    .title h2 {
+        margin: 5px 0 0 0;
+        font-size: 15pt;
+        font-weight: normal;
+    }
+    .student-info {
+        margin: 15px 0 20px 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        font-size: 12pt;
+    }
+    .student-info div {
+        border-bottom: 1px solid #333;
+        padding: 4px 0;
+    }
+    .task {
+        margin-bottom: 25px;
+        page-break-inside: avoid;
+    }
+    .task h3 {
+        color: #0a4d68;
+        margin-bottom: 8px;
+        font-size: 14pt;
+    }
+    .task ol {
+        margin: 0;
+        padding-left: 25px;
+    }
+    .task ol li {
+        margin-bottom: 8px;
+    }
+    .sub-list {
+        margin-top: 5px;
+        padding-left: 25px;
+    }
+    .sub-list li {
+        margin-bottom: 5px;
+    }
+</style>
+</head>
+<body>
+
+    <div class="logo-header">
+        <img src="https://raw.githubusercontent.com/clematik/clematik.github.io/refs/heads/main/lincoln_tech_hub_logo.jpeg" alt="Lincoln Tech Hub Logo" class="logo">
+    </div>
+
+    <div class="title">
+        <h1>Coding and Robotics Practical</h1>
+        <h2>Grade 1 - 4 | Lab 1</h2>
+    </div>
+
+    <div class="student-info">
+        <div><strong>Name:</strong> _________________________________</div>
+        <div><strong>Grade:</strong> _________________________________</div>
+    </div>
+
+    <div class="task">
+        <h3>1. Micro:bit with MakeCode</h3>
+        <p>Write a program for the Micro:bit using MakeCode that does the following:</p>
+        <ol class="sub-list">
+            <li>Create a new project and name it with your Full Name.</li>
+            <li>Display the heart symbol ❤️ on the LED screen.</li>
+            <li>Make the heart symbol blink ON and OFF every 1 second continuously.</li>
+            <li>Your program must use a loop.</li>
+        </ol>
+    </div>
+
+    <div class="task">
+        <h3>2. ScratchJr Animation</h3>
+        <p>Create an animated scenario in ScratchJr.</p>
+        <ol class="sub-list">
+            <li>Add two sprites of your choice to the stage.</li>
+            <li>Change the backdrop to any backdrop of your choice.</li>
+            <li>Create a scenario of your choice where the two sprites interact.</li>
+        </ol>
+    </div>
+
+</body>
+</html>

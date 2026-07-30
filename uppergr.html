@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lincoln Tech Hub - Coding and Robotics Practical Exam</title>
+<style>
+    @page {
+        size: A4;
+        margin: 12mm;
+    }
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 13pt;
+        color: #000;
+        line-height: 1.4;
+    }
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 3px solid #0a4d68;
+        padding-bottom: 8px;
+        margin-bottom: 12px;
+    }
+    .logo {
+        height: 65px;
+    }
+    .school-info {
+        text-align: center;
+        flex-grow: 1;
+    }
+    .school-info h1 {
+        margin: 0;
+        font-size: 22pt;
+        color: #0a4d68;
+        letter-spacing: 1px;
+    }
+    .school-info h2 {
+        margin: 3px 0;
+        font-size: 16pt;
+    }
+    .school-info h3 {
+        margin: 0;
+        font-size: 13pt;
+        font-weight: normal;
+    }
+    .paper-id {
+        text-align: right;
+        font-size: 10pt;
+        border: 1px dashed #333;
+        padding: 6px 8px;
+        min-width: 120px;
+    }
+    .student-info {
+        margin: 12px 0 18px 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        font-size: 12pt;
+    }
+    .student-info div {
+        border-bottom: 1px solid #333;
+        padding: 3px 0;
+    }
+    .instructions {
+        background: #eef7ff;
+        border: 2px solid #0a4d68;
+        padding: 12px;
+        margin-bottom: 15px;
+        border-radius: 4px;
+    }
+    .instructions h4 {
+        margin: 0 0 8px 0;
+        color: #0a4d68;
+    }
+    .instructions ol {
+        margin: 0;
+        padding-left: 20px;
+    }
+    .task {
+        margin-bottom: 20px;
+        page-break-inside: avoid;
+    }
+    .task h4 {
+        background: #0a4d68;
+        color: white;
+        padding: 8px;
+        margin: 0 0 10px 0;
+        font-size: 14pt;
+    }
+    .image-box {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        margin: 10px 0;
+    }
+    .image-box img {
+        width: 48%;
+        border: 2px solid #333;
+        border-radius: 4px;
+    }
+    .note {
+        font-style: italic;
+        color: #333;
+        margin-top: 8px;
+    }
+    .footer {
+        margin-top: 25px;
+        text-align: center;
+        font-size: 9pt;
+        border-top: 1px solid #ccc;
+        padding-top: 6px;
+    }
+</style>
+</head>
+<body>
+
+    <div class="header">
+        <img src="https://raw.githubusercontent.com/clematik/clematik.github.io/refs/heads/main/lincoln_tech_hub_logo.jpeg" alt="Lincoln Tech Hub Logo" class="logo">
+        <div class="school-info">
+            <h1>LINCOLN TECH HUB</h1>
+            <h2>Coding and Robotics Practical Examination</h2>
+            <h3>Grades 5 - 7 | Time: 1 Hour</h3>
+        </div>
+        <div class="paper-id">
+            <strong>Paper ID:</strong><br>
+            <span id="paperId"></span><br>
+            <strong>Date:</strong><br>
+            <span id="examDate"></span>
+        </div>
+    </div>
+
+    <div class="student-info">
+        <div><strong>Name:</strong> ____________________________________________</div>
+        <div><strong>Grade:</strong> ____________________________________________</div>
+      
+    </div>
+
+
+
+    <div class="task">
+        <h4>TASK 1: FUSION 360 - 3D MODELING</h4>
+        <p><strong>Your Job:</strong> Make the best possible replica of the model shown below using <strong>Autodesk Fusion 360</strong>. 
+        This model will be 3D printed.</p>
+
+        <div class="image-box">
+            <img src="https://raw.githubusercontent.com/clematik/clematik.github.io/refs/heads/main/IMG-20260729-WA0047.jpg" alt="Reference Image 1">
+            <img src="https://raw.githubusercontent.com/clematik/clematik.github.io/refs/heads/main/IMG-20260729-WA0049.jpg" alt="Reference Image 2">
+        </div>
+        <p class="note">Note: Try to match the shapes, sizes, and details as closely as possible.</p>
+    </div>
+
+    <div class="task">
+        <h4>TASK 2: SCRATCH PROGRAMMING</h4>
+        <p><strong>Your Job:</strong> Open Scratch and do the following:</p>
+        <ol>
+            <li><strong>Change the Sprite:</strong> Delete the Scratch Cat and choose a new sprite.</li>
+            <li><strong>Make it Move:</strong> Use code blocks so that when the green flag is clicked:
+                <ul>
+                    <li>Use at least <strong>1 Motion block</strong></li>
+                    <li>Use at least <strong>1 block from another category</strong> that makes the sprite move or act</li>
+                </ul>
+            </li>
+        </ol>
+
+    </div>
+
+    
+<script>
+    // Auto-generate Paper ID and Date
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('en-GB'); // DD/MM/YYYY
+    const idStr = 'LTH-PRAC-' + now.getFullYear() + 
+                  String(now.getMonth()+1).padStart(2,'0') + 
+                  String(now.getDate()).padStart(2,'0') + '-' + 
+                  String(now.getHours()).padStart(2,'0') + 
+                  String(now.getMinutes()).padStart(2,'0');
+    
+    document.getElementById('paperId').innerText = idStr;
+    document.getElementById('examDate').innerText = dateStr;
+</script>
+
+</body>
+</html>
